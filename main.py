@@ -10,7 +10,7 @@ embeddings = OpenAIEmbeddings()
 text_splitter = CharacterTextSplitter(
   separator="\n",
   chunk_size=200,
-  chunk_overlap=100,
+  chunk_overlap=0,
 )
 
 loader = TextLoader("facts.txt")
@@ -24,16 +24,24 @@ db = Chroma.from_documents(
   persist_directory="emb",
 )
 
-results = db.similarity_search_with_score(
-  "What is an interesting fact about the english language?",
-  k=1,
-)
+# results = db.similarity_search_with_score(
+#   "What is an interesting fact about the english language?",
+#   k=1,
+# )
+
+# for result in results:
+#   print("\n")
+#   print(result[1])
+#   print(result[0].page_content)
 
 # for doc in docs:
 #   print(doc.page_content)
 #   print("\n")
 
+results = db.similarity_search(
+  "What is an interesting fact about the English language?"
+)
+
 for result in results:
   print("\n")
-  print(result[1])
-  print(result[0].page_content)
+  print(result.page_content)
